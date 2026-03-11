@@ -66,7 +66,7 @@ The local dev server is configured to listen on `0.0.0.0:8787`, so devices on th
 
 Local API token is read from:
 
-[`worker/.dev.vars`](/E:/project/worker/.dev.vars)
+`worker/.dev.vars`
 
 Current local test token:
 
@@ -133,7 +133,7 @@ pnpm exec wrangler d1 create ics-reminders
 
 2. Copy the returned database ID into:
 
-[`worker/wrangler.toml`](/E:/project/worker/wrangler.toml)
+`worker/wrangler.toml`
 
 3. Set the production API token:
 
@@ -163,11 +163,11 @@ pnpm run deploy
 
 The skill source lives in:
 
-[`skills/ics-reminder-skill/SKILL.md`](/E:/project/skills/ics-reminder-skill/SKILL.md)
+`skills/ics-reminder-skill/SKILL.md`
 
 Installed Codex copy:
 
-[`C:\Users\xgg\.codex\skills\ics-reminder-skill`](/C:/Users/xgg/.codex/skills/ics-reminder-skill)
+`C:\Users\xgg\.codex\skills\ics-reminder-skill`
 
 After updating the installed skill, restart Codex to pick it up.
 
