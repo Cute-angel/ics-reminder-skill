@@ -1,0 +1,5 @@
+node_modules/
+.pnpm-store/
+.wrangler/
+worker-dev.out.log
+worker-dev.err.log

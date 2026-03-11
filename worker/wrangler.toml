@@ -1,0 +1,13 @@
+name = "ics-reminder-worker"
+main = "src/index.ts"
+compatibility_date = "2026-03-11"
+
+[dev]
+ip = "0.0.0.0"
+port = 8787
+local_protocol = "http"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ics-reminders"
+database_id = "00000000-0000-0000-0000-000000000000"

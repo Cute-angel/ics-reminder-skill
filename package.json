@@ -1,0 +1,21 @@
+{
+  "name": "ics-reminder-skill-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-strip-types worker/test/run-tests.ts",
+    "check": "tsc --noEmit",
+    "dev": "pnpm exec wrangler dev --config worker/wrangler.toml",
+    "deploy": "pnpm exec wrangler deploy --config worker/wrangler.toml",
+    "db:execute:local": "pnpm exec wrangler d1 execute ics-reminders --local --file worker/schema.sql --config worker/wrangler.toml",
+    "db:execute:remote": "pnpm exec wrangler d1 execute ics-reminders --remote --file worker/schema.sql --config worker/wrangler.toml"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260310.1",
+    "@types/node": "^25.4.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.72.0"
+  }
+}

@@ -1,0 +1,4 @@
+version: 1
+display_name: ICS Reminder
+short_description: Turn reminder-like requests into API-backed calendar reminders with ICS subscription support.
+default_prompt: Create or manage calendar reminder requests by extracting reminder fields, asking for missing date/time details, and calling the configured reminder API securely.
