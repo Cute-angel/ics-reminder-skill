@@ -1,8 +1,11 @@
 # ICS Reminder Skill + Worker
 
+For LLM-oriented deployment and skill installation guidance, see [llm.md](llm.md).
+
 This project contains two parts:
 
-- a Codex skill in `skills/ics-reminder-skill`
+- a Codex skill in `skills/codex-ics-reminder`
+- an OpenClaw skill in `skills/openclaw-ics-reminder`
 - a Cloudflare Worker in `worker/` that stores reminders in D1 and exposes an ICS feed
 
 ## What It Does
@@ -26,12 +29,14 @@ This project contains two parts:
 ```text
 .
 ├── skills/
-│   └── ics-reminder-skill/
+│   ├── codex-ics-reminder/
+│   └── openclaw-ics-reminder/
 ├── worker/
 │   ├── migrations/
 │   ├── schema.sql
 │   ├── src/index.ts
-│   └── wrangler.toml
+│   ├── wrangler.local.toml
+│   └── wrangler.remote.toml
 ├── package.json
 └── tsconfig.json
 ```
@@ -48,12 +53,6 @@ Initialize the local D1 schema:
 
 ```bash
 pnpm run db:execute:local
-```
-
-If you already created a local database before `location` and `url` support was added, also run:
-
-```bash
-pnpm exec wrangler d1 execute ics-reminders --local --file worker/migrations/0001_add_location_and_url.sql --config worker/wrangler.toml
 ```
 
 Start the worker:
@@ -128,17 +127,17 @@ Important: this project uses Cloudflare `D1`, not `D2`.
 1. Create a remote D1 database:
 
 ```bash
-pnpm exec wrangler d1 create ics-reminders
+pnpm run db:create:remote
 ```
 
 2. Copy the returned database ID into:
 
-`worker/wrangler.toml`
+`worker/wrangler.remote.toml`
 
 3. Set the production API token:
 
 ```bash
-pnpm exec wrangler secret put REMINDER_API_TOKEN
+pnpm run secret:put
 ```
 
 4. Apply the base schema remotely:
@@ -147,27 +146,24 @@ pnpm exec wrangler secret put REMINDER_API_TOKEN
 pnpm run db:execute:remote
 ```
 
-5. If the remote database already existed before `location` and `url` support, also run:
-
-```bash
-pnpm exec wrangler d1 execute ics-reminders --remote --file worker/migrations/0001_add_location_and_url.sql --config worker/wrangler.toml
-```
-
-6. Deploy:
+5. Deploy:
 
 ```bash
 pnpm run deploy
 ```
 
+Local development uses `worker/wrangler.local.toml`.
+Remote deploys and remote D1 commands use `worker/wrangler.remote.toml`.
+
 ## Skill Installation
 
 The skill source lives in:
 
-`skills/ics-reminder-skill/SKILL.md`
+`skills/codex-ics-reminder/SKILL.md`
 
 Installed Codex copy:
 
-`C:\Users\xgg\.codex\skills\ics-reminder-skill`
+`C:\Users\xgg\.codex\skills\codex-ics-reminder`
 
 After updating the installed skill, restart Codex to pick it up.
 

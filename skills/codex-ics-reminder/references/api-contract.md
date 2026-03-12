@@ -1,5 +1,9 @@
 # API Contract
 
+This file is a low-level HTTP reference for the reminder worker.
+
+Normal skill execution should use `scripts/reminder-client.mjs` rather than issuing raw HTTP calls directly.
+
 Base URL example:
 
 ```text
@@ -50,6 +54,14 @@ GET /v1/reminders
 Authorization: Bearer <REMINDER_API_TOKEN>
 ```
 
+Success response shape:
+
+```json
+{
+  "reminders": []
+}
+```
+
 ## Delete reminder
 
 ```http
@@ -58,6 +70,16 @@ Authorization: Bearer <REMINDER_API_TOKEN>
 ```
 
 This is a soft delete and marks the reminder as cancelled.
+
+Success response shape:
+
+```json
+{
+  "id": "2d0a9e7c-53c3-4940-9f8f-2cc76b85f57a",
+  "deleted": true,
+  "updated_at": "2026-03-12T08:00:00.000Z"
+}
+```
 
 ## Rotate ICS feed token
 
@@ -85,6 +107,8 @@ GET /v1/feeds/:token.ics
 Returns:
 - `200 text/calendar` when the token is valid
 - `404` when the token is invalid or rotated out
+
+This endpoint is exposed for calendar clients. The helper script does not need to fetch the ICS file during normal reminder operations.
 
 ## Error codes
 

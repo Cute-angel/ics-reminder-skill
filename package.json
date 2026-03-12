@@ -6,10 +6,14 @@
   "scripts": {
     "test": "node --experimental-strip-types worker/test/run-tests.ts",
     "check": "tsc --noEmit",
-    "dev": "pnpm exec wrangler dev --config worker/wrangler.toml",
-    "deploy": "pnpm exec wrangler deploy --config worker/wrangler.toml",
-    "db:execute:local": "pnpm exec wrangler d1 execute ics-reminders --local --file worker/schema.sql --config worker/wrangler.toml",
-    "db:execute:remote": "pnpm exec wrangler d1 execute ics-reminders --remote --file worker/schema.sql --config worker/wrangler.toml"
+    "token:generate": "node scripts/generate-reminder-api-token.mjs",
+    "reminder:client": "node scripts/reminder-client.mjs",
+    "dev": "pnpm exec wrangler dev --config worker/wrangler.local.toml",
+    "deploy": "pnpm exec wrangler deploy --config worker/wrangler.remote.toml",
+    "db:create:remote": "pnpm exec wrangler d1 create ics-reminders --config worker/wrangler.remote.toml",
+    "db:execute:local": "pnpm exec wrangler d1 execute ics-reminders --local --file worker/schema.sql --config worker/wrangler.local.toml",
+    "db:execute:remote": "pnpm exec wrangler d1 execute ics-reminders --remote --file worker/schema.sql --config worker/wrangler.remote.toml",
+    "secret:put": "pnpm exec wrangler secret put REMINDER_API_TOKEN --config worker/wrangler.remote.toml"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260310.1",

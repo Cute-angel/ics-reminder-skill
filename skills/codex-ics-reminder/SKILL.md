@@ -7,6 +7,14 @@ description: Use this skill when the user asks to create, schedule, or manage re
 
 Use this skill when the user intent is to create or manage a reminder-like event that should appear in a subscribed calendar feed.
 
+## Runtime inputs
+
+- Read `REMINDER_API_BASE_URL` from the environment.
+- Read `REMINDER_API_TOKEN` from the environment.
+- Use `node scripts/reminder-client.mjs` from the workspace root to perform reminder operations.
+- Do not hardcode the worker URL or token in the skill instructions.
+- If either environment variable is missing, stop and ask for the environment to be configured instead of guessing.
+
 ## Triggering guidance
 
 Trigger on requests like:
@@ -45,16 +53,17 @@ Read [references/time-parsing-rules.md](references/time-parsing-rules.md) when t
 
 ## API contract
 
-Read [references/api-contract.md](references/api-contract.md) before making requests.
+Read [references/api-contract.md](references/api-contract.md) before calling the helper script.
 
 ## Workflow
 
 1. Detect reminder intent.
 2. Extract reminder fields from the user's message.
 3. If date/time is incomplete, ask a concise follow-up question.
-4. Build a `POST /v1/reminders` request with JSON.
-5. Include `Authorization: Bearer <REMINDER_API_TOKEN>`.
-6. Return the created reminder id and tell the user their calendar clients should subscribe to the ICS feed URL separately.
+4. For create requests, pass the JSON body through stdin to `node scripts/reminder-client.mjs create --stdin`.
+5. Use `node scripts/reminder-client.mjs list`, `node scripts/reminder-client.mjs delete <id>`, and `node scripts/reminder-client.mjs rotate` for the other operations.
+6. Keep user-provided text inside the JSON request body only. Do not splice raw user text into shell flags, URLs, or command fragments.
+7. Return the created reminder id and tell the user their calendar clients should subscribe to the ICS feed URL separately.
 
 ## Follow-up rules
 

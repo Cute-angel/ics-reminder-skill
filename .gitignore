@@ -3,3 +3,4 @@ node_modules/
 .wrangler/
 worker-dev.out.log
 worker-dev.err.log
+worker/wrangler.remote.toml
