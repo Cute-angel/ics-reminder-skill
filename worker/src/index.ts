@@ -81,7 +81,10 @@ const worker = {
 
 export default worker;
 
-export async function routeRequest(request: Request, env: WorkerEnv): Promise<Response> {
+export async function routeRequest(
+  request: Request,
+  env: WorkerEnv,
+): Promise<Response> {
   const url = new URL(request.url);
   const pathname = trimTrailingSlash(url.pathname);
 
@@ -112,7 +115,11 @@ export async function routeRequest(request: Request, env: WorkerEnv): Promise<Re
     return json(feed, 201);
   }
 
-  if (request.method === "GET" && pathname.startsWith("/v1/feeds/") && pathname.endsWith(".ics")) {
+  if (
+    request.method === "GET" &&
+    pathname.startsWith("/v1/feeds/") &&
+    pathname.endsWith(".ics")
+  ) {
     const token = decodeURIComponent(
       pathname.slice("/v1/feeds/".length, pathname.length - ".ics".length),
     );
@@ -129,7 +136,10 @@ export async function routeRequest(request: Request, env: WorkerEnv): Promise<Re
   return json({ error: "not_found" }, 404);
 }
 
-export async function handleRequest(request: Request, env: WorkerEnv): Promise<Response> {
+export async function handleRequest(
+  request: Request,
+  env: WorkerEnv,
+): Promise<Response> {
   return worker.fetch(request, env);
 }
 
@@ -237,10 +247,9 @@ async function rotateFeedToken(
 
   if (activeFeed) {
     await env.DB.batch([
-      env.DB.prepare(`UPDATE feeds SET status = 'rotated', rotated_at = ?2 WHERE id = ?1`).bind(
-        activeFeed.id,
-        now,
-      ),
+      env.DB.prepare(
+        `UPDATE feeds SET status = 'rotated', rotated_at = ?2 WHERE id = ?1`,
+      ).bind(activeFeed.id, now),
       env.DB.prepare(
         `INSERT INTO feeds (id, token_hash, owner_label, status, created_at, rotated_at)
          VALUES (?1, ?2, 'default', 'active', ?3, ?3)`,
@@ -292,7 +301,7 @@ function renderIcsCalendar(reminders: ReminderRow[]): string {
     "PRODID:-//Codex//ICS Reminder Skill//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
-    "X-WR-CALNAME:Codex Reminders",
+    "X-WR-CALNAME: Reminders",
     "X-WR-TIMEZONE:UTC",
   ];
 
@@ -380,7 +389,8 @@ function validateReminderPayload(payload: JsonValue): ValidReminder {
   }
 
   const alarm = body.alarm_offset_minutes;
-  const alarmOffsetMinutes = alarm == null || alarm === "" ? null : normalizeAlarmOffset(alarm);
+  const alarmOffsetMinutes =
+    alarm == null || alarm === "" ? null : normalizeAlarmOffset(alarm);
 
   return {
     title,
@@ -393,7 +403,8 @@ function validateReminderPayload(payload: JsonValue): ValidReminder {
     rrule,
     alarm_offset_minutes: alarmOffsetMinutes,
     source_text: body.source_text == null ? null : String(body.source_text),
-    idempotency_key: body.idempotency_key == null ? null : String(body.idempotency_key).trim(),
+    idempotency_key:
+      body.idempotency_key == null ? null : String(body.idempotency_key).trim(),
   };
 }
 
@@ -439,7 +450,10 @@ function isValidTimeZone(timeZone: string): boolean {
   }
 }
 
-async function requireBearerAuth(request: Request, env: WorkerEnv): Promise<void> {
+async function requireBearerAuth(
+  request: Request,
+  env: WorkerEnv,
+): Promise<void> {
   const auth = request.headers.get("authorization");
   const prefix = "Bearer ";
   if (!auth || !auth.startsWith(prefix)) {
@@ -474,7 +488,10 @@ function base64Url(bytes: Uint8Array): string {
   for (const byte of bytes) {
     binary += String.fromCharCode(byte);
   }
-  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
+  return btoa(binary)
+    .replaceAll("+", "-")
+    .replaceAll("/", "_")
+    .replaceAll("=", "");
 }
 
 function escapeIcsText(value: string): string {
@@ -510,14 +527,21 @@ function foldIcsLine(line: string): string {
 
 function toIcsUtcTimestamp(value: string): string {
   const date = new Date(value);
-  return date.toISOString().replaceAll("-", "").replaceAll(":", "").replace(".000", "");
+  return date
+    .toISOString()
+    .replaceAll("-", "")
+    .replaceAll(":", "")
+    .replace(".000", "");
 }
 
 function trimTrailingSlash(pathname: string): string {
   return pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
 }
 
-function json(payload: JsonValue | Record<string, JsonValue>, status = 200): Response {
+function json(
+  payload: JsonValue | Record<string, JsonValue>,
+  status = 200,
+): Response {
   return new Response(JSON.stringify(payload, null, 2), {
     status,
     headers: JSON_HEADERS,

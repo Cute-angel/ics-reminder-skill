@@ -4,8 +4,9 @@ For LLM-oriented deployment and skill installation guidance, see [llm.md](llm.md
 
 This project contains two parts:
 
-- a Codex skill in `skills/codex-ics-reminder`
-- an OpenClaw skill in `skills/openclaw-ics-reminder`
+- a skills folder in `skills`
+  - the Codex skill in `skills/codex-ics-reminder`
+  - the OpenClaw skill in `skills/openclaw-ics-reminder`
 - a Cloudflare Worker in `worker/` that stores reminders in D1 and exposes an ICS feed
 
 ## What It Does
@@ -121,8 +122,6 @@ pnpm run check
 ```
 
 ## Cloudflare Deployment
-
-Important: this project uses Cloudflare `D1`, not `D2`.
 
 1. Create a remote D1 database:
 
