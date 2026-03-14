@@ -246,15 +246,13 @@ async function rotateFeedToken(
   ).first<FeedRow>();
 
   if (activeFeed) {
-    await env.DB.batch([
-      env.DB.prepare(
-        `UPDATE feeds SET status = 'rotated', rotated_at = ?2 WHERE id = ?1`,
-      ).bind(activeFeed.id, now),
-      env.DB.prepare(
-        `INSERT INTO feeds (id, token_hash, owner_label, status, created_at, rotated_at)
-         VALUES (?1, ?2, 'default', 'active', ?3, ?3)`,
-      ).bind(crypto.randomUUID(), tokenHash, now),
-    ]);
+    await env.DB.prepare(
+      `UPDATE feeds
+       SET token_hash = ?2, status = 'active', rotated_at = ?3
+       WHERE id = ?1`,
+    )
+      .bind(activeFeed.id, tokenHash, now)
+      .run();
   } else {
     await env.DB.prepare(
       `INSERT INTO feeds (id, token_hash, owner_label, status, created_at, rotated_at)

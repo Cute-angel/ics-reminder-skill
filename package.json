@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --experimental-strip-types worker/test/run-tests.ts",
+    "test:client:local": "node scripts/test-reminder-client-local.mjs",
     "check": "tsc --noEmit",
     "token:generate": "node scripts/generate-reminder-api-token.mjs",
     "reminder:client": "node scripts/reminder-client.mjs",
