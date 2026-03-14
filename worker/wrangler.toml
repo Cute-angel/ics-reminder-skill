@@ -1,0 +1,11 @@
+name = "ics-reminder-worker"
+main = "src/index.ts"
+compatibility_date = "2026-03-11"
+
+# Deploy-to-Cloudflare button and subdirectory templates expect a standard
+# Wrangler config file at the template root. Update the D1 database ID after
+# creating your own database in the target account.
+[[d1_databases]]
+binding = "DB"
+database_name = "ics-reminders"
+database_id = "00000000-0000-0000-0000-000000000000"

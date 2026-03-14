@@ -1,5 +1,7 @@
 # ICS Reminder Skill + Worker
 
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Cute-angel/ics-reminder-skill/tree/master/worker)
+
 For LLM-oriented deployment and skill installation guidance, see [llm.md](llm.md).
 
 This project contains two parts:
@@ -34,8 +36,10 @@ This project contains two parts:
 │   └── openclaw-ics-reminder/
 ├── worker/
 │   ├── migrations/
+│   ├── package.json
 │   ├── schema.sql
 │   ├── src/index.ts
+│   ├── wrangler.toml
 │   ├── wrangler.local.toml
 │   └── wrangler.remote.toml
 ├── package.json
@@ -122,6 +126,8 @@ pnpm run check
 ```
 
 ## Cloudflare Deployment
+
+Use the button above to start a one-click Cloudflare deployment from the `worker/` subdirectory template. The subdirectory now includes its own standard `wrangler.toml` and `package.json`, which is the structure the Cloudflare deploy button expects.
 
 1. Create a remote D1 database:
 
